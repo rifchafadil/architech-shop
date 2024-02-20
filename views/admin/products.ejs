@@ -5,9 +5,9 @@
     <body>
         <%- include('../includes/navigation.ejs') %>
 
-            <main>
+            <main class="products__admin">
                 <% if (prods.length > 0) { %>
-                    <div class="grid">
+                    <div class="products__wrap d-grid w-100 flex-row">
                         <% for (let product of prods) { %>
                             <article class="card product-item">
                                 <header class="card__header">

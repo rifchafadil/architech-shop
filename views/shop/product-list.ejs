@@ -4,10 +4,17 @@
 
     <body>
         <%- include('../includes/navigation.ejs') %>
-
-            <main>
+            <main class="products__shop">
+                <div class="products__filter d-flex flex-nowrap gap-2 overflow-auto w-100">
+                    <a class="<%= path === '/products' && !filter ? 'active' : '' %>" href="/products">All</a>
+                    <a class="<%= filter === 'sofa' ? 'active' : '' %>" href="?category=sofa">Sofa</a>
+                    <a class="<%= filter === 'lamp' ? 'active' : '' %>" href="?category=lamp">Lamp</a>
+                    <a class="<%= filter === 'cupboard' ? 'active' : '' %>" href="?category=cupboard">Cupboard</a>
+                    <a class="<%= filter === 'chandelier' ? 'active' : '' %>" href="?category=chandelier">Chandelier</a>
+                    <a class="<%= filter === 'wooden_chair' ? 'active' : '' %>" href="?category=wooden_chair">Wooden Chair</a>
+                </div>
                 <% if (prods.length > 0) { %>
-                    <div class="grid">
+                    <div class="products__wrap d-grid w-100 flex-row justify-content-around">
                         <% for (let product of prods) { %>
                             <article class="card product-item">
                                 <header class="card__header">

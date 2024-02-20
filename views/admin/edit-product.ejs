@@ -6,7 +6,7 @@
 <body>
     <%- include('../includes/navigation.ejs') %>
 
-    <main>
+    <main class="products__admin">
         <% if (errorMessage) { %>
             <div class="user-message user-message--error"><%= errorMessage %></div>
         <% } %>
@@ -36,6 +36,17 @@
                     id="price" 
                     step="0.01" 
                     value="<% if (editing || hasError) { %><%= product.price %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="category">Category</label>
+                <select name="category" id="category" class="form-select">
+                    <option value="<%= editing || hasError ? product.category : ''  %>">Select Category</option>
+                    <option value="sofa" <%= editing || hasError ? product.category === 'sofa' ? 'selected' : '' : '' %>>Sofa</option>
+                    <option value="lamp" <%= editing || hasError ? product.category === 'lamp' ? 'selected' : '' : '' %>>Lamp</option>
+                    <option value="cupboard" <%= editing || hasError ? product.category === 'cupboard' ? 'selected' : '' : '' %>>Cupboard</option>
+                    <option value="chandelier" <%= editing || hasError ? product.category === 'chandelier' ? 'selected' : '' : '' %>>Chandelier</option>
+                    <option value="wooden_chair" <%= editing || hasError ? product.category === 'wooden_chair' ? 'selected' : '' : '' %>>Wooden Chair</option>
+                </select>
             </div>
             <div class="form-control">
                 <label for="description">Description</label>

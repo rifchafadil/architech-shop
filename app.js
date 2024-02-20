@@ -49,6 +49,7 @@ const fileFilter = (req, file, cb) => {
 	}
 };
 
+// View Engine Setup
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -56,9 +57,9 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
-	flags: 'a',
-});
+// const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
+// 	flags: 'a',
+// });
 
 // app.use(helmet());
 // app.use(compression());
@@ -68,7 +69,9 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'),
 // 	})
 // );
 
+// Default Use
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));

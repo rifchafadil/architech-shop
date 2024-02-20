@@ -8,17 +8,26 @@ const PDFDocument = require('pdfkit');
 const Product = require('../models/product');
 const Order = require('../models/order');
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 5;
 
 exports.getProducts = (req, res, next) => {
+	const ITEMS_PER_PAGE = 1;
 	const page = +req.query.page || 1;
+	const category = req.query.category;
 	let totalItems;
 
-	Product.find()
+	let query = {};
+
+	if (category) {
+		query.category = category;
+	}
+	// console.log(req.query.category);
+
+	Product.find(query)
 		.countDocuments()
 		.then((numProducts) => {
 			totalItems = numProducts;
-			return Product.find()
+			return Product.find(query)
 				.skip((page - 1) * ITEMS_PER_PAGE)
 				.limit(ITEMS_PER_PAGE);
 		})
@@ -27,6 +36,7 @@ exports.getProducts = (req, res, next) => {
 				prods: products,
 				pageTitle: 'Products',
 				path: '/products',
+				filter: req.query.category,
 				currentPage: page,
 				hasNextPage: ITEMS_PER_PAGE * page < totalItems,
 				hasPreviousPage: page > 1,
@@ -76,6 +86,7 @@ exports.getIndex = (req, res, next) => {
 				prods: products,
 				pageTitle: 'Shop',
 				path: '/',
+				filter: req.query.category,
 				currentPage: page,
 				hasNextPage: ITEMS_PER_PAGE * page < totalItems,
 				hasPreviousPage: page > 1,
@@ -92,15 +103,28 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
+	let total = 0;
+	let qty = 0;
 	req.user
 		.populate('cart.items.productId')
 		.execPopulate()
 		.then((user) => {
 			const products = user.cart.items;
+			// Total Price
+			total = 0;
+			qty = 0;
+			products.forEach((p) => {
+				total += p.quantity * p.productId.price;
+				qty += p.quantity;
+			});
+			// Total Item
+
 			res.render('shop/cart', {
 				path: '/cart',
 				pageTitle: 'Your Cart',
 				products: products,
+				totalPrice: total.toFixed(2),
+				totalItem: qty,
 			});
 		})
 		.catch((err) => {

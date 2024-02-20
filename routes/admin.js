@@ -25,6 +25,12 @@ router.post(
 			})
 			.trim(),
 		body('price').isFloat(),
+		body('category')
+			.isString()
+			.isLength({
+				min: 3,
+			})
+			.trim(),
 		body('description')
 			.isLength({
 				min: 5,
